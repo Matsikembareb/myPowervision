@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Risk Assessment</title>
+</head>
+<body>
+
+    <h1>Digital Risk Assessment Form</h1>
+
+    {% if success_message %}
+        <p>{{ success_message }}</p>
+
+        <div>
+            <h2>Submitted Data:</h2>
+            {% for key, value in submitted_data.items() %}
+                <p>{{ key }}: {{ value }}</p>
+            {% endfor %}
+        </div>
+
+        <button onclick="window.location.reload()">Submit Another Form</button>
+
+    {% else %}
+
+        <form action="/" method="POST">
+            <div>
+                <label for="risk_date">Date</label>
+                <input type="date" id="risk_date" name="risk_date" required>
+            </div>
+        </form>
+        
+    {% endif %}
+</body>
+</html>
