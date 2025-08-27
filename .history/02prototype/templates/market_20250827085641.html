@@ -44,7 +44,6 @@
                 <th scope="col">Name</th>
                 <th scope="col">Barcode</th>
                 <th scope="col">Price</th>
-                <th scope="col">Options</th>
             </tr>
         </thead>
         <tbody>
@@ -55,19 +54,12 @@
                 <td>{{ item.quantity }}</td>
             </tr>
             {% endfor %}-->
-            {% for item in items %}
-                <tr>
-                    <td>{{item.id}}</td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.barcode}}</td>
-                    <td>{{item.price}}$</td>
-                    <td>
-                        <button class="btn btn-outline btn-info">More Info</button>
-                        <button class="btn btn-outline btn-success">Buy</button>
-                    </td>
-                </tr>
-            {%  endfor %}
-
+            <tr>
+                <td>value for ID</td>
+                <td>value for name</td>
+                <td>value for barcode</td>
+                <td>value for price</td>
+            </tr>
         </tbody>
     </table>
     <!-- Optional JavaScript; choose one of the two! -->
