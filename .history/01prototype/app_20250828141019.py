@@ -5,10 +5,6 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 app.secret_key='your_secret_key'
 
-class item(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(length=30), nullable=False)
-    
 @app.route("/")
 def home_page():
     return render_template("base.html")

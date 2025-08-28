@@ -2,9 +2,8 @@ from flask import Flask, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///market.db'
 db = SQLAlchemy(app)
-
+app.secret_key='your_secret_key'
 
 class item(db.Model):
     id = db.Column(db.Integer, primary_key=True)

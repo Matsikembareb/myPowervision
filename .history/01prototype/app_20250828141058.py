@@ -7,7 +7,7 @@ app.secret_key='your_secret_key'
 
 class item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(length=30), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     
 @app.route("/")
 def home_page():
