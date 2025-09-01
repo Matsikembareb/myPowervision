@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myPowervision - Employee Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            padding-top: 80px; /* Account for fixed navbar */
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(25, 55, 109, 0.95), rgba(30, 66, 131, 0.9)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23193b6d" width="1200" height="800"/><polygon fill="%231e4283" points="0,400 300,200 600,350 900,150 1200,250 1200,800 0,800" opacity="0.3"/><circle fill="%23ffffff" cx="200" cy="200" r="80" opacity="0.1"/><circle fill="%23ffffff" cx="800" cy="300" r="120" opacity="0.05"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            margin-top: -80px; /* Offset the body padding for full-height hero */
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(25, 55, 109, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #193b6d;
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: #1e4283;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #193b6d;
+            border: 2px solid #193b6d;
+            position: relative;
+        }
+
+        .btn-outline:hover {
+            background: #193b6d;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(25, 59, 109, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e4283, #193b6d);
+            color: white;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(30, 66, 131, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #193b6d, #142a4f);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(25, 59, 109, 0.4);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            margin-top: 80px; /* Account for fixed navbar */
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .motto {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+            min-width: 200px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .btn-large.btn-primary {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            color: #193b6d;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-large.btn-primary:hover {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-large.btn-outline {
+            background: transparent;
+            color: white;
+            border: 3px solid white;
+        }
+
+        .btn-large.btn-outline:hover {
+            background: white;
+            color: #193b6d;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .features {
+            padding: 4rem 2rem;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .features-subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e1e8ed;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(30, 66, 131, 0.15);
+            border-color: #1e4283;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #193b6d;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: #193b6d;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .company-info {
+            background: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 3px solid #1e4283;
+        }
+
+        .company-info h3 {
+            font-size: 1.8rem;
+            color: #193b6d;
+            margin-bottom: 1rem;
+        }
+
+        .company-info p {
+            color: #5a6c7d;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+
+            .nav {
+                padding: 0.75rem 1rem;
+            }
+            
+            .nav-buttons {
+                gap: 0.5rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                margin-top: -70px;
+            }
+
+            .hero-content {
+                margin-top: 70px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .motto {
+                font-size: 1.2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-large {
+                min-width: 250px;
+            }
+            
+            .features {
+                padding: 2rem 1rem;
+            }
+            
+            .features h2 {
+                font-size: 2rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .company-info {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .motto {
+                font-size: 1rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .btn-large {
+                padding: 1rem 2rem;
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" id="navbar">
+        <div class="logo"><img src="01prototype/images/transparent-Photoroom.png" alt="Logo"></div>
+        <div class="nav-buttons">
+            <a href="/login" class="btn btn-outline">Employee Login</a>
+            <a href="/register" class="btn btn-primary">Register</a>
+        </div>
+    </nav>
+
+    <div class="hero">        
+        <div class="hero-content">
+            <h1>myPowervision</h1>
+            <p class="motto">Power Where You Need It</p>
+            <p class="hero-description">
+                Welcome to Powervision's internal management system. Access your tools for inventory management, 
+                safety assessments, and work order tracking - all designed to keep our operations running smoothly.
+            </p>
+            <div class="cta-buttons">
+                <a href="/login" class="btn btn-primary btn-large">Access Portal</a>
+                <a href="/register" class="btn btn-outline btn-large">New Employee Setup</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="company-info">
+        <h3>For Powervision Employees</h3>
+        <p>This internal portal provides access to all the tools and systems you need to perform your daily tasks efficiently and safely. Please use your employee credentials to access the system.</p>
+    </div>
+
+    <section class="features">
+        <h2>Your Daily Tools</h2>
+        <p class="features-subtitle">Everything you need to manage operations, maintain safety standards, and track progress</p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Inventory Management</h3>
+                <p>Track stock levels, request supplies, and manage equipment across all departments and job sites.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚠️</div>
+                <h3>Safety Assessments</h3>
+                <p>Complete risk assessment forms, report incidents, and ensure compliance with safety protocols.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Work Orders</h3>
+                <p>Create, assign, and track job cards with real-time updates and completion status monitoring.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Progress Reports</h3>
+                <p>Generate detailed reports on project status, resource utilization, and operational efficiency.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Team Coordination</h3>
+                <p>Collaborate with colleagues, share updates, and coordinate workflows across departments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile Access</h3>
+                <p>Access all tools from any device, whether you're in the office or on-site in the field.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2025 Powervision Employee Portal. Internal use only.</p>
+    </footer>
+
+    <script>
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
