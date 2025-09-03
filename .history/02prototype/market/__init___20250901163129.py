@@ -6,6 +6,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///market.db'
 db = SQLAlchemy(app)
 
 from market import routes
-from market.models import Item
+
 
 
