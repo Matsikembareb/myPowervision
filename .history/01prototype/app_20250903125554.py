@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -12,14 +12,6 @@ def home_page():
 @app.route("/register")
 def register_page():
     return render_template("auth/register.html")
-
-@app.route("/login")
-def login_page():
-    return render_template("auth/login.html")
-
-@app.route("/forgot-password")
-def forgot_password_page():
-    return render_template("auth/forgot_password.html")
 
 
 if __name__ == '__main__':

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Register Page
+{% endblock %}
+
+{% block content %}
+    <form method="POST" class="form-register" style="color: white;">
+        {{ form.username.label }} {{ form.username(class="form-control") }}
+        {{ form.email.label }} {{ form.email(class="form-control") }}
+        {{ form.password1.label }} {{ form.password1(class="form-control") }}
+        {{ form.password2.label }} {{ form.password2(class="form-control") }}
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+{% endblock %}

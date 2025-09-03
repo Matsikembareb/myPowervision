@@ -20,41 +20,18 @@
 
         .hero {
             height: 100vh;
-            background: linear-gradient(135deg, rgba(25, 55, 109, 0.8), rgba(30, 66, 131, 0.7)), 
-                        url('images/site/martin\ and\ blue\ guy.jpg');
+            background: linear-gradient(135deg, rgba(25, 55, 109, 0.1), rgba(30, 66, 131, 0.1)), 
+                        url('images/powervision-truck.jpg');
             background-size: cover;
-            background-position: center bottom;
-            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
             position: relative;
-            margin-top: -80px;
-            min-height: 600px; /* Ensure minimum height */
-        }
-
-        /* Alternative: If you want the truck more visible, use this instead */
-        .hero-alt {
-            height: 100vh;
-            background: linear-gradient(to bottom, 
-                        rgba(25, 55, 109, 0.4) 0%, 
-                        rgba(25, 55, 109, 0.2) 50%,
-                        rgba(25, 55, 109, 0.6) 100%), 
-                        url('images/site/truck.jpg');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: #f0f8ff; /* Light blue fallback */
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            margin-top: -80px;
-            padding-top: 120px;
+            margin-top: -80px; /* Offset the body padding for full-height hero */
         }
 
         .nav {
@@ -66,7 +43,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(25, 55, 109, 0.2);
             z-index: 1000;
@@ -426,10 +403,10 @@
 </head>
 <body>
     <nav class="nav" id="navbar">
-        <a href="https://www.powervision.co.zw" class="logo"><img src="images\transparent-Photoroom.png" alt="Logo"></a>
+        <div class="logo"><img src="images\transparent-Photoroom.png" alt="Logo"></div>
         <div class="nav-buttons">
-            <a href="{{ url_for('login_page') }}" class="btn btn-outline">Employee Login</a>
-            <a href="{{ url_for('register_page') }}" class="btn btn-primary">Register</a>
+            <a href="/login" class="btn btn-outline">Employee Login</a>
+            <a href="/register" class="btn btn-primary">Register</a>
         </div>
     </nav>
 
@@ -442,8 +419,8 @@
                 safety assessments, and work order tracking - all designed to keep our operations running smoothly.
             </p>
             <div class="cta-buttons">
-                <a href="{{ url_for('login_page') }}" class="btn btn-primary btn-large">Access Portal</a>
-                <a href="{{ url_for('register_page') }}" class="btn btn-outline btn-large">New Employee Setup</a>
+                <a href="/login" class="btn btn-primary btn-large">Access Portal</a>
+                <a href="/register" class="btn btn-outline btn-large">New Employee Setup</a>
             </div>
         </div>
     </div>

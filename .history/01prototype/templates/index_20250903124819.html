@@ -20,7 +20,7 @@
 
         .hero {
             height: 100vh;
-            background: linear-gradient(135deg, rgba(25, 55, 109, 0.8), rgba(30, 66, 131, 0.7)), 
+            background: linear-gradient(135deg, rgba(25, 55, 109, 0.7), rgba(30, 66, 131, 0.6)), 
                         url('images/site/martin\ and\ blue\ guy.jpg');
             background-size: cover;
             background-position: center bottom;
@@ -426,10 +426,10 @@
 </head>
 <body>
     <nav class="nav" id="navbar">
-        <a href="https://www.powervision.co.zw" class="logo"><img src="images\transparent-Photoroom.png" alt="Logo"></a>
+        <div class="logo"><img src="images\transparent-Photoroom.png" alt="Logo"></div>
         <div class="nav-buttons">
-            <a href="{{ url_for('login_page') }}" class="btn btn-outline">Employee Login</a>
-            <a href="{{ url_for('register_page') }}" class="btn btn-primary">Register</a>
+            <a href="/login" class="btn btn-outline">Employee Login</a>
+            <a href="/register" class="btn btn-primary">Register</a>
         </div>
     </nav>
 
@@ -442,8 +442,8 @@
                 safety assessments, and work order tracking - all designed to keep our operations running smoothly.
             </p>
             <div class="cta-buttons">
-                <a href="{{ url_for('login_page') }}" class="btn btn-primary btn-large">Access Portal</a>
-                <a href="{{ url_for('register_page') }}" class="btn btn-outline btn-large">New Employee Setup</a>
+                <a href="/login" class="btn btn-primary btn-large">Access Portal</a>
+                <a href="/register" class="btn btn-outline btn-large">New Employee Setup</a>
             </div>
         </div>
     </div>

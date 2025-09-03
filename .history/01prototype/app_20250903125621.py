@@ -13,14 +13,6 @@ def home_page():
 def register_page():
     return render_template("auth/register.html")
 
-@app.route("/login")
-def login_page():
-    return render_template("auth/login.html")
-
-@app.route("/forgot-password")
-def forgot_password_page():
-    return render_template("auth/forgot_password.html")
-
 
 if __name__ == '__main__':
     app.run(debug=True)
