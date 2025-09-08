@@ -15,7 +15,7 @@ class User(db.Model):
     
     @password.setter
     def password(self, plain_text_password):
-        self.password_hash = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')
+        self.password_hash = bcrypt.generate_password_hash(plain_text_password)
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)

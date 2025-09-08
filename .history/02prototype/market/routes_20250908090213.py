@@ -19,13 +19,13 @@ def register_page():
     if form.validate_on_submit():
         user_to_create = User(username=form.username.data,
                               email=form.email.data,
-                              password=form.password1.data)
+                              password_hash=form.password1.data)
         db.session.add(user_to_create)
         db.session.commit()
         return redirect(url_for('market_page'))
     if form.errors != {}:  # If there are no errors from the validations
         for err_msg in form.errors.values():
-            flash(f'Error creating user: {err_msg}', category='danger')
+            flash(f'Error creating user: {err_msg}')
     return render_template('register.html', form=form)
 
 @app.route('/login', methods=['POST', 'GET'])

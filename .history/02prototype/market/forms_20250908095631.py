@@ -4,16 +4,11 @@ from wtforms.validators import Length, EqualTo, DataRequired, Email
 from market.models import User
 
 class RegisterForm(FlaskForm):
-    def validate_username(self, user_to_check):
+    def validate(self, user_to_check):
         user = User.query.filter_by(username=user_to_check.data).first()
         if user:
             raise ValidationError('Username already exists! Please try a different username.')
-
-    def validate_email(self, email_to_check):
-        email = User.query.filter_by(email=email_to_check.data).first()
-        if email:
-            raise ValidationError('Email already exists! Please try a different email.')
-
+        
     username = StringField('Username:', validators=[Length(min=2, max=30), DataRequired()])
     email = StringField('Email Address:', validators=[DataRequired(), Email()])
     password1 = PasswordField('Password:', validators=[Length(min=6), DataRequired()])
