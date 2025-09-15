@@ -1,0 +1,1 @@
+from mypowervision import app

@@ -1,0 +1,21 @@
+from myPowervision import app
+from flask import render_template, url_for, redirect
+from myPowervision.forms import LoginForm
+
+@app.route("/")
+@app.route('/home')
+def home_page():
+    return render_template("index.html", title="Home", active="home")
+
+@app.route("/register")
+def register_page():
+    return render_template("auth/register.html", title="Register", active="register")
+
+@app.route("/login")
+    form = LoginForm()
+def login_page():
+    return render_template("auth/login.html", title="Login", active="login", form=form)
+
+@app.route("/forgot-password")
+def forgot_password_page():
+    return render_template("auth/forgot_password.html", title="Forgot Password", active="forgot_password")
