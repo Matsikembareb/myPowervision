@@ -1,0 +1,22 @@
+{% extends 'auth/admin/layout.html' %}
+
+{% block content %}
+    <div class="container">
+        {% include 'auth/admin/navbar.html' %}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col xl-6 col-lg-6 col-md-6 col-sm-12">
+                <div class="bg-success d-flex p-3 justify-content-between align-items-center text-white p-3 rounded">
+                    <h4>Total Users: {{ total_users }}</h4>
+
+                </div>
+                <h1 class="text-center my-3">
+                    Admin Dashboard
+                </h1>
+
+            </div>
+
+    </div>
+    
+{% endblock content %}

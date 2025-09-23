@@ -1,0 +1,14 @@
+{% extends 'auth/admin/layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center my-3">
+            Admin Dashboard
+        </h1>
+        {% if session.admin_name %}
+        {{ session.admin_name }}
+        {% endif %}
+
+        </div>
+    </div>
+{% endblock content %}

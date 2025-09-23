@@ -1,0 +1,38 @@
+{% extends "auth/admin/layout.html" %}
+
+{% block content %}
+    <div class="container">
+        {% include 'auth/admin/navbar.html' %}
+        <hr>
+        <div class="my-2">
+            <div class="table table responsive">
+                <h1 class="text-2xl font-bold mb-4">All Users</h1>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ 'Approved' if user.status == 1 else 'Not Approved' }}</td>
+                                <td>
+                                    <a href="{{ url_for('adminEditUser', user_id=user.id) }}" class="text-blue-500">Edit</a>
+                                    <a href="{{ url_for('adminDeleteUser', user_id=user.id) }}" class="text-red-500">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
