@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Assign Permissions to Role: {{ role.name }}</h1>
+    
+    <div class="mb-3">
+      <a href="{{ url_for('roleManagement') }}" class="btn btn-secondary">Back to Roles</a>
+    </div>
+    
+    <form method="POST">
+      <div class="mb-3">
+        <h5>Available Permissions:</h5>
+        {% if permissions %}
+          {% for permission in permissions %}
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="permissions" value="{{ permission.id }}" 
+                     id="permission{{ permission.id }}"
+                     {% if permission in role.permissions %}checked{% endif %}>
+              <label class="form-check-label" for="permission{{ permission.id }}">
+                {{ permission.permission }} - {{ permission.description or 'No description' }}
+              </label>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">No permissions available.</p>
+        {% endif %}
+      </div>
+      
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Update Permissions</button>
+        <a href="{{ url_for('roleManagement') }}" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

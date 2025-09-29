@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>User Permissions Management</h1>
+<div class="mb-3">
+    <a href="{{ url_for('create_permission') }}" class="btn btn-primary">Create New Permission</a>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Permission ID</th>
+            <th>Permission</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if permissions %}
+            {% for permission in permissions %}
+            <tr>
+                <td>{{ permission.id }}</td>
+                <td>{{ permission.permission }}</td>
+                <td>{{ permission.description }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="4" class="text-center">No permissions found.</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock content %}

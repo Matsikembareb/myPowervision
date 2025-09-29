@@ -1,0 +1,81 @@
+<div class="bg-light border-end" style="min-height: calc(100vh - 56px);">
+  <div class="p-3">
+    
+    <!-- Dashboard -->
+    <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #6c757d; margin: 15px 0 8px 0;">Dashboard</div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="{{ url_for('home_page') }}" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-home me-2"></i>Home
+      </a>
+    </nav>
+
+    <!-- Staff Management -->
+    <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #6c757d; margin: 15px 0 8px 0;">Staff</div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-users me-2"></i>Staff Directory
+      </a>
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-building me-2"></i>Departments
+      </a>
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-briefcase me-2"></i>Positions
+      </a>
+    </nav>
+
+    <!-- Customer Management -->
+    <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #6c757d; margin: 15px 0 8px 0;">Customers</div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-address-book me-2"></i>Customer List
+      </a>
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-handshake me-2"></i>Relations
+      </a>
+    </nav>
+
+    <!-- Job Management -->
+    <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #6c757d; margin: 15px 0 8px 0;">Jobs</div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-tasks me-2"></i>All Jobs
+      </a>
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-tags me-2"></i>Job Types
+      </a>
+    </nav>
+
+    <!-- Admin Section -->
+    {% if current_user.is_authenticated and current_user.role and current_user.role.name == 'admin' %}
+    <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #6c757d; margin: 15px 0 8px 0;">Admin</div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="{{ url_for('adminDashboard') }}" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+      </a>
+      <a class="nav-link" href="{{ url_for('adminUsers') }}" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-user-cog me-2"></i>Users
+      </a>
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-shield-alt me-2"></i>Roles
+      </a>
+      <a class="nav-link" href="#" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-key me-2"></i>Permissions
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- Profile -->
+    {% if current_user.is_authenticated %}
+    <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #6c757d; margin: 15px 0 8px 0;">Account</div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="{{ url_for('userUpdateProfile') }}" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-user-edit me-2"></i>Profile
+      </a>
+      <a class="nav-link" href="{{ url_for('userChangePassword') }}" style="padding: 8px 15px; color: #333;">
+        <i class="fas fa-lock me-2"></i>Password
+      </a>
+    </nav>
+    {% endif %}
+
+  </div>
+</div>

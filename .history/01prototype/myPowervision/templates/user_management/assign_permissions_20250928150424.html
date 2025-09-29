@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="mb-3">
+        <h1>Permission Assignment for: <strong>{{ role.name }}</strong></h1>
+    </div>
+
+    <form method="post" action="">
+        {{} form.hidden_tag }}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Permission ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Assign</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if permissions %}
+                    {% for permission in permissions %}
+                    <tr>
+                        <td>{{ permission.id }}</td>
+                        <td>{{ permission.permission }}</td>
+                        <td>{{ permission.description }}</td>
+                        <td>
+                            <input type="checkbox" 
+                                   name="permissions" 
+                                   value="{{ permission.id }}"
+                                   {% if permission.id in assigned_permissions %}checked{% endif %}>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No permissions found.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Save Permissions</button>
+            <a href="{% url 'role_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

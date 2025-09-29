@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Create New Role</h1>
+    {{ form.hidden_tag() }}
+    <form action="" method="POST">
+      <div class="mb-3">
+        <label for="name" class="form-label">Role Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Role</button>
+      <a href="{{ url_for('home_page') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+{% endblock content %}

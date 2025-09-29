@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-4">
+    <h1 class="mb-4">Create New Staff</h1>
+    {{ form.hidden_tag() }}
+    <form action="" methods="GET, POST">
+        <p>
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control", placeholder="Enter first name") }}<br>
+        {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+        {{ form.surname.label }}<br>
+        {{ form.surname(class="form-control", placeholder="Enter last name") }}<br>
+        {% for error in form.surname.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+        {{ form.email.label }}<br>
+        {{ form.email(class="form-control", placeholder="Enter email") }}<br>
+        {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+        {{ form.phone.label }}<br>
+        {{ form.phone(class="form-control", placeholder="Enter phone number") }}<br>
+        {% for error in form.phone.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.position.label }}<br>
+            {{ form.position(class="form-control", placeholder="Enter position") }}<br>
+            {% for error in form.position.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.department.label }}<br>
+            {{ form.department(class="form-control", placeholder="Enter department") }}<br>
+            {% for error in form.department.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.salary.label }}<br>
+            {{ form.salary(class="form-control", placeholder="Enter salary") }}<br>
+            {% for error in form.salary.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.allowances_worth.label }}<br>
+            {{ form.allowances_worth(class="form-control", placeholder="Enter allowances worth") }}<br>
+            {% for error in form.allowances_worth.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('staffManagement') }}" class="btn btn-secondary">Cancel</a>
+        </p>
+    </form>
+    </div>
+{% endblock content %}

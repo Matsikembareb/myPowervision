@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Create New Role</h1>
+    {{ form.hidden_tag() }}
+    <form action="" methods="GET, POST" novalidate>
+      <p>
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control", placeholder="Enter role name") }}<br>
+        {% for error in form.name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.description.label }}<br>
+        {{ form.description(class="form-control", placeholder="Enter role description") }}<br>
+        {% for error in form.description.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.submit() }}
+        <a href="{{ url_for('roleManagement') }}" class="btn btn-secondary">Cancel</a>
+      </p>
+    </form>
+  </div>
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">User Management</h1>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Activity Status</th>
+          <th>Availability Status</th>
+          <th>Created At</th>
+          <th>Last Seen</th>
+          <th>Last Login</th>
+          <th>Approval Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.activity_status }}</td>
+            <td>{{ user.availability_status }}</td>
+            <td>{{ user.created_at }}</td>
+            <td>{{ user.last_seen }}</td>
+            <td>{{ user.last_login }}</td>
+            <td>{{ user.approval_status }}</td>
+            <td>
+              <a href="#" class="btn btn-sm btn-warning">Edit</a>
+              <form action="#"  style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4" class="text-center">No roles found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}

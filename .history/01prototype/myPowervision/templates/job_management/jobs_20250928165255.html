@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Job Management</h1>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Job Number</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Created By</th>
+            <th>Assigned To</th>
+            <th>Customer</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.id }}</td>
+            <td>{{ job.job_number }}</td>
+            <td>{{ job.title }}</td>
+            <td>{{ job.status }}</td>
+            <td>{{ job.created_by.username if job.created_by else "N/A" }}</td>
+            <td>{{ job.assigned_to.username if job.assigned_to else "N/A" }}</td>
+            <td>{{ job.customer.name if job.customer else "N/A" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,81 @@
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+import sqlalchemy as sa
+from myPowervision import db
+from myPowervision.models import Permission, Staff, User, Role
+from myPowervision.models import Job
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=4, max=64)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=64)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=128)])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+
+    def validate_username(self, username):
+        user = db.session.scalar(sa.select(User).where(User.username == username.data))
+        if user is not None:
+            raise ValidationError('Please use a different username.')
+
+    def validate_email(self, email):
+        user = db.session.scalar(sa.select(User).where(User.email == email.data))
+        if user is not None:
+            raise ValidationError('Please use a different email address.')
+
+class StaffForm(FlaskForm):
+    name = StringField('First Name', validators=[DataRequired(), Length(min=1, max=64)])
+    surname = StringField('Last Name', validators=[DataRequired(), Length(min=1, max=64)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=64)])
+    phone = StringField('Phone Number', validators=[Length(max=20)])
+    department = StringField('Department', validators=[Length(max=64)])
+    position = StringField('Position', validators=[Length(max=64)])
+    hire_date = StringField('Hire Date', validators=[Length(max=10)])  # Format: YYYY-MM-DD
+    salary = StringField('Salary', validators=[Length(max=20)])
+    allowances_worth = StringField('Allowances Worth', validators=[Length(max=20)])
+    submit = SubmitField('Submit')
+
+    def validate_email(self, email):
+        staff = db.session.scalar(sa.select(Staff).where(Staff.email == email.data))
+        if staff is not None:
+            raise ValidationError('Email already exists. Please use a different email address.')
+
+class RoleForm(FlaskForm):
+    name = StringField('Role Name', validators=[DataRequired(), Length(min=2, max=64)])
+    description = StringField('Description', validators=[Length(max=256)])
+    submit = SubmitField('Submit')
+
+    def validate_name(self, name):  # Changed from validate_role to validate_name
+        role = db.session.scalar(sa.select(Role).where(Role.name == name.data))
+        if role is not None:
+            raise ValidationError('Role already exists.')  # Use ValidationError instead of ValueError
+class PermissionForm(FlaskForm):
+    permission = StringField('Permission Name', validators=[DataRequired(), Length(min=2, max=64)])
+    description = StringField('Description', validators=[Length(max=256)])
+    submit = SubmitField('Submit')
+
+    def validate_permission(self, permission):  # Changed from validate_role to validate_permission
+        permission = db.session.scalar(sa.select(Permission).where(Permission.permission == permission.data))
+        if permission is not None:
+            raise ValidationError('Permission already exists.')
+
+class JobForm(FlaskForm):
+    job_number = StringField('Job Number', validators=[DataRequired(), Length(min=1, max=64)])
+    title = StringField('Title', validators=[DataRequired(), Length(min=1, max=128)])
+    status = StringField('Status', validators=[DataRequired(), Length(min=1, max=32)])
+    created_by = StringField('Created By', validators=[DataRequired(), Length(min=1, max=64)])
+    assigned_to = StringField('Assigned To', validators=[Length(max=64)])
+    customer = StringField('Customer', validators=[DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Submit')
+
+    def validate_job_number(self, job_number):
+        # Assuming you have a Job model to check against
+        job = db.session.scalar(sa.select(Job).where(Job.job_number == job_number.data))
+        if job is not None:
+            raise ValidationError('Job number already exists. Please use a different job number.')

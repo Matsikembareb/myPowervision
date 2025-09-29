@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="mb-3">
+        <h1>Permission Assignment for: <strong>{{ role.name }}</strong></h1>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if permissions %}
+                {% for permission in permissions %}
+                <tr>
+                    <td>{{ permission.permission }}</td>
+                    <td>{{ permission.description }}</td>
+                    <td>
+                                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No permissions found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

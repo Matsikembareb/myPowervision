@@ -1,0 +1,95 @@
+<div class="bg-light border-end vh-100">
+  <div class="p-3">
+    
+    <!-- Dashboard -->
+    <div class="text-muted text-uppercase fw-bold small mb-2">Dashboard</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('home_page') }}">
+        <i class="fas fa-home me-2"></i>Home
+      </a>
+    </nav>
+
+    <!-- Staff Management -->
+    <div class="text-muted text-uppercase fw-bold small mb-2">Staff</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-users me-2"></i>Staff Directory
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-building me-2"></i>Departments
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-briefcase me-2"></i>Positions
+      </a>
+    </nav>
+
+    <!-- User Management -->
+    <div class="text-muted text-uppercase fw-bold small mb-2">Users</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-user-friends me-2"></i>User Management
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('roleManagement') }}">
+        <i class="fas fa-user-tag me-2"></i>Role Management
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-shield-alt me-2"></i>Permission Management
+      </a>
+    </nav>
+
+    <!-- Customer Management -->
+    <div class="text-muted text-uppercase fw-bold small mb-2">Customers</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-address-book me-2"></i>Customer List
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-handshake me-2"></i>Relations
+      </a>
+    </nav>
+
+    <!-- Job Management -->
+    <div class="text-muted text-uppercase fw-bold small mb-2">Jobs</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-tasks me-2"></i>All Jobs
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-tags me-2"></i>Job Types
+      </a>
+    </nav>
+
+    <!-- Admin Section -->
+    {% if current_user.is_authenticated and current_user.role and current_user.role.name == 'admin' %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Admin</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('adminDashboard') }}">
+        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('adminUsers') }}">
+        <i class="fas fa-user-cog me-2"></i>Users
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-shield-alt me-2"></i>Roles
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-key me-2"></i>Permissions
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- Profile -->
+    {% if current_user.is_authenticated %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Account</div>
+    <nav class="nav flex-column">
+      <a class="nav-link text-dark py-2" href="{{ url_for('userUpdateProfile') }}">
+        <i class="fas fa-user-edit me-2"></i>Profile
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('userChangePassword') }}">
+        <i class="fas fa-lock me-2"></i>Password
+      </a>
+    </nav>
+    {% endif %}
+
+  </div>
+</div>

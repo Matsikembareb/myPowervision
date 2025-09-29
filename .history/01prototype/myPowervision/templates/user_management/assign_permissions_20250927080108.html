@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="mb-3">
+        <h1>Role Permission Assignment for:</h1>
+        <a href="" class="btn btn-primary">{{Create New Role}}</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Permission ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if permissions %}
+                {% for permission in permissions %}
+                <tr>
+                    <td>{{ permission.id }}</td>
+                    <td>{{ permission.permission }}</td>
+                    <td>{{ permission.description }}</td>
+                    <td>{% if user.status == 0 %}
+                                    <button class="btn btn-warning">
+                                        <a href="{{ url_for('adminApproveUser', user_id=user.id) }}">Allow</a>
+                                    </button>
+                                    {% else %}
+                                    <button class="btn w-full btn-danger">
+                                        <a href="{{ url_for('adminDisapproveUser', user_id=user.id) }}" class="text-white">Revoke</a>
+                                    </button>
+                                    {% endif %}
+                                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No permissions found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

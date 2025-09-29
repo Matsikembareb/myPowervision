@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Department Management</h1>
+    <div class="mb-3">
+        <a href="{{ url_for('create_department') }}" class="btn btn-primary">Create New Department</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for department in departments %}
+                <tr>
+                    <td>{{ department.id }}</td>
+                    <td>{{ department.name }}</td>
+                    <td>{{ department.description or 'No description' }}</td>
+                    <td>
+                        <!-- FIX: Use correct route and variable names -->
+                        <a href="{{ url_for('edit_department', department_id=department.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ url_for('delete_department', department_id=department.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No departments found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
