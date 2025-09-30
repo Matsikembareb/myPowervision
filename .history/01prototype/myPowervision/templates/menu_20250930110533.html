@@ -1,0 +1,117 @@
+<div class="bg-light border-end vh-100">
+  <div class="p-3">
+    
+    <!-- Dashboard - Always visible when authenticated -->
+    {% if current_user.is_authenticated %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Dashboard</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('home_page') }}">
+        <i class="fas fa-home me-2"></i>Home
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- Staff Management - For developers, executives, and logistics -->
+    {% if current_user.is_authenticated and (current_user.is_developer() or current_user.is_executive() or current_user.is_logistics()) %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Staff</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('staffManagement') }}">
+        <i class="fas fa-users me-2"></i>Staff Directory
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('departmentManagement') }}">
+        <i class="fas fa-building me-2"></i>Departments
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('positionManagement') }}">
+        <i class="fas fa-briefcase me-2"></i>Positions
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- User Management - Mainly for developers and executives -->
+    {% if current_user.is_authenticated and (current_user.is_developer() or current_user.is_executive()) %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Users</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('userManagement') }}">
+        <i class="fas fa-user-friends me-2"></i>User Management
+      </a>
+      {% if current_user.is_developer() %}
+      <a class="nav-link text-dark py-2" href="{{ url_for('roleManagement') }}">
+        <i class="fas fa-user-tag me-2"></i>Role Management
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('permissionManagement') }}">
+        <i class="fas fa-shield-alt me-2"></i>Permissions
+      </a>
+      {% endif %}
+    </nav>
+    {% endif %}
+    
+    <!-- Customer Management - For most roles except stores -->
+    {% if current_user.is_authenticated and not current_user.is_stores() %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Customers</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('customerManagement') }}">
+        <i class="fas fa-address-book me-2"></i>Customer List
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- Job Management - For technical, logistics, and executives -->
+    {% if current_user.is_authenticated and (current_user.is_technical() or current_user.is_logistics() or current_user.is_executive()) %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Jobs</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('jobManagement') }}">
+        <i class="fas fa-tasks me-2"></i>All Jobs
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-calendar-alt me-2"></i>Scheduled Jobs
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- Stores/Inventory Management - For stores and logistics -->
+    {% if current_user.is_authenticated and (current_user.is_stores() or current_user.is_logistics()) %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Inventory</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-boxes me-2"></i>Inventory
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-truck me-2"></i>Stock Movement
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- Admin Section - Only for developers -->
+    {% if current_user.is_authenticated and current_user.is_developer() %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Admin</div>
+    <nav class="nav flex-column mb-3">
+      <a class="nav-link text-dark py-2" href="{{ url_for('adminDashboard') }}">
+        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('adminUsers') }}">
+        <i class="fas fa-user-cog me-2"></i>Users
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-shield-alt me-2"></i>System Settings
+      </a>
+    </nav>
+    {% endif %}
+
+    <!-- Profile - Always visible when authenticated -->
+    {% if current_user.is_authenticated %}
+    <div class="text-muted text-uppercase fw-bold small mb-2">Account</div>
+    <nav class="nav flex-column">
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-user-edit me-2"></i>Profile
+      </a>
+      <a class="nav-link text-dark py-2" href="#">
+        <i class="fas fa-lock me-2"></i>Change Password
+      </a>
+      <a class="nav-link text-dark py-2" href="{{ url_for('logout') }}">
+        <i class="fas fa-sign-out-alt me-2"></i>Logout
+      </a>
+    </nav>
+    {% endif %}
+
+  </div>
+</div>
