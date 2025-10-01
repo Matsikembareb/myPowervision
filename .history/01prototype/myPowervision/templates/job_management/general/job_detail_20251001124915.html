@@ -1,0 +1,29 @@
+<div class="mt-3">
+    <h6><strong>Workflow Status:</strong></h6>
+    <div class="row">
+        <div class="col-md-3">
+            <small class="d-block">
+                <i class="fas fa-store fa-lg {{ 'text-success' if job.stores_confirmation else 'text-muted' }}"></i>
+                Stores: {{ "✓ Confirmed" if job.stores_confirmation else "✗ Pending" }}
+            </small>
+        </div>
+        <div class="col-md-3">
+            <small class="d-block">
+                <i class="fas fa-tools fa-lg {{ 'text-success' if job.work_done else 'text-muted' }}"></i>
+                Work Done: {{ "✓ Complete" if job.work_done else "✗ Pending" }}
+            </small>
+        </div>
+        <div class="col-md-3">
+            <small class="d-block {{ 'text-success' if job.technical_manager_approval else '' }}">
+                <i class="fas fa-check-circle fa-lg {{ 'text-success' if job.technical_manager_approval else 'text-muted' }}"></i>
+                Tech Approval: {{ "✓ Approved" if job.technical_manager_approval else "✗ Pending" }}
+            </small>
+        </div>
+        <div class="col-md-3">
+            <small class="d-block">
+                <i class="fas fa-dollar-sign fa-lg {{ 'text-success' if job.accounts_payment else 'text-muted' }}"></i>
+                Payment: {{ "✓ Paid" if job.accounts_payment else "✗ Pending" }}
+            </small>
+        </div>
+    </div>
+</div>

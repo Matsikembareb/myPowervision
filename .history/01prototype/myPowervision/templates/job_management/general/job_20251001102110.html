@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Job</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Job Number</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Created By</th>
+                <th>Assigned To</th>
+                <th>Customer</th>
+                <th>Payment Terms</th>
+                <th>Date Scheduled</th>
+                <th>Date Completed</th>
+                <th>Notes</th>
+                <th>Stores Confirmation</th>
+                <th>Logistics Confirmation</th>
+                <th>Technical Manager Approval</th>
+                <th>Accounts Payment</th>
+                <th>Invoice Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.id }}</td>
+                <td>{{ job.job_number or "N/A" }}</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.description or "N/A" }}</td>
+                <td>{{ job.status or "N/A" }}</td>
+                <td>{{ job.created_by.username if job.created_by else "N/A" }}</td>
+                <td>{{ job.assigned_to.username if job.assigned_to else "N/A" }}</td>
+                <td>{{ job.customer.company_name if job.customer else "N/A" }}</td>
+                <td>{{ job.payment_terms or "N/A" }}</td>
+                <td>{{ job.date_scheduled.strftime('%Y-%m-%d %H:%M') if job.date_scheduled else "N/A" }}</td>
+                <td>{{ job.date_completed.strftime('%Y-%m-%d %H:%M') if job.date_completed else "N/A" }}</td>
+                <td>{{ job.notes or "N/A" }}</td>
+                <td>{{ "Yes" if job.stores_confirmation else "No" }}</td>
+                <td>{{ "Yes" if job.work_done else "No" }}</td>
+                <td>{{ "Yes" if job.technical_manager_approval else "No" }}</td>
+                <td>{{ "Yes" if job.accounts_payment else "No" }}</td>
+                <td>{{ job.invoice_number or "N/A" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mb-3">
+        <a href="{{ url_for('job_management') }}" class="btn btn-primary">Back</a>
+    </div>
+</div>
+{% endblock %}
