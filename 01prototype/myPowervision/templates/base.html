@@ -103,7 +103,7 @@
             <a class="nav-link {{ 'active' if active == 'technician_verified' else '' }}" href="#">Verified</a>
           {% elif current_user.is_technical() %}
             <li class="nav-item">
-            <a class="nav-link {{ 'active' if active == 'technician_jobs' else '' }}" href="{{ url_for('technician_jobs') }}">My Jobs</a>
+            <a class="nav-link {{ 'active' if active == 'technician_jobs' else '' }}" href="#">My Jobs</a>
             </li>
             <li class="nav-item">
             <a class="nav-link {{ 'active' if active == 'technician_scheduled' else '' }}" href="#">Scheduled</a>
