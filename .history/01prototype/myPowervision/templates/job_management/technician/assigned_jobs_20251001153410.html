@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Assigned Jobs</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Job Number</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Customer</th>
+                <th>Scheduled</th>
+                <th>Completed</th>
+                <th>Invoice Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.id }}</td>
+                <td>{{ job.job_number or "N/A" }}</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.status or "N/A" }}</td>
+                <td>{{ job.customer.company_name if job.customer else "N/A" }}</td>
+                <td>{{ job.date_scheduled.strftime('%Y-%m-%d %H:%M') if job.date_scheduled else "N/A" }}</td>
+                <td>{{ job.date_completed.strftime('%Y-%m-%d %H:%M') if job.date_completed else "N/A" }}</td>
+                <td>{{ job.invoice_number or "N/A" }}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Click me
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('job_detail', job_id=job.id) }}">View Details</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('technician_update_job', job_id=job.id) }}">Make Updates</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

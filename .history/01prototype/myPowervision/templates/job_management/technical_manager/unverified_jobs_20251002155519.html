@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Unapproved Jobs</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Job Card</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Customer</th>
+                <th>Scheduled</th>
+                <th>Completed</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.id }}</td>
+                <td>{{ job.job_number }}</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.status or "N/A" }}</td>
+                <td>{{ job.assigned_to.username if job.assigned_to else "N/A" }}</td>
+                <td>{{ job.customer.company_name if job.customer else "N/A" }}</td>
+                <td>{{ job.date_scheduled.strftime('%Y-%m-%d %H:%M') if job.date_scheduled else "N/A" }}</td>
+                <td>{{ job.date_completed.strftime('%Y-%m-%d %H:%M') if job.date_completed else "N/A" }}</td>
+                <td><a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                <a href="{{ url_for('tech_verify_job', job_id=job.id) }}" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to approve this job? This action cannot be undone.')"> Approve Job</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

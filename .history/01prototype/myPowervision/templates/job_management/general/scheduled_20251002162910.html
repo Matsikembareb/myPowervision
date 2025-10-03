@@ -1,32 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">Job Management</h1>
-    <div class="mb-3">
-        <a href="{{ url_for('create_job') }}" class="btn btn-primary">Create New Job</a>
-    </div>
+    <h1 class="mb-4">All Scheduled Jobs</h1>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Job Number</th>
                 <th>Title</th>
                 <th>Status</th>
-                <th>Created By</th>
-                <th>Assigned To</th>
+                <th>Assigned By</th>
                 <th>Customer</th>
+                <th>Scheduled</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for job in jobs %}
             <tr>
                 <td>{{ job.id }}</td>
-                <td>{{ job.job_number }}</td>
                 <td>{{ job.title }}</td>
-                <td>{{ job.status }}</td>
+                <td>{{ job.status or "N/A" }}</td>
                 <td>{{ job.created_by.username if job.created_by else "N/A" }}</td>
-                <td>{{ job.assigned_to.username if job.assigned_to else "N/A" }}</td>
-                <td>{{ job.customer.name if job.customer else "N/A" }}</td>
+                <td>{{ job.customer.company_name if job.customer else "N/A" }}</td>
+                <td>{{ job.date_scheduled.strftime('%Y-%m-%d %H:%M') if job.date_scheduled else "N/A" }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('job_detail', job_id=job.id) }}">View Details</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
