@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Add New Vehicle</h1>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.make.label(class="form-label") }}
+            {{ form.make(class="form-control", placeholder="Enter vehicle make") }}
+            {% for error in form.make.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.model.label(class="form-label") }}
+            {{ form.model(class="form-control", placeholder="Enter vehicle model") }}
+            {% for error in form.model.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.year.label(class="form-label") }}
+            {{ form.year(class="form-control", placeholder="Enter year") }}
+            {% for error in form.year.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.license_plate.label(class="form-label") }}
+            {{ form.license_plate(class="form-control", placeholder="Enter license plate") }}
+            {% for error in form.license_plate.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.vin.label(class="form-label") }}
+            {{ form.vin(class="form-control", placeholder="Enter VIN number") }}
+            {% for error in form.vin.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.owner.label(class="form-label") }}
+            {{ form.owner(class="form-control") }}
+            {% for error in form.owner.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('vehicle_management') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

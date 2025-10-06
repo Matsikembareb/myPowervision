@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">My Jobs</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Job Number</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>My Role</th>
+                <th>Customer</th>
+                <th>Scheduled</th>
+                <th>Completed</th>
+                <th>Invoice Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr class="{% if job.status == 'closed' %}table-success{% elif job.status == 'completed' %}table-warning{% else %}table-secondary{% endif %}">
+                <td>{{ job.id }}</td>
+                <td>{{ job.job_number or "N/A" }}</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.status or "N/A" }}</td>
+                <td>
+                    {% if job.assigned_to_id == current_user.id %}
+                        <span class="badge bg-primary">Primary Technician</span>
+                    {% elif current_user in job.assistants %}
+                        <span class="badge bg-secondary">Assistant</span>
+                    {% endif %}
+                </td>
+                <td>{{ job.customer.company_name if job.customer else "N/A" }}</td>
+                <td>{{ job.date_scheduled.strftime('%Y-%m-%d %H:%M') if job.date_scheduled else "N/A" }}</td>
+                <td>{{ job.date_completed.strftime('%Y-%m-%d %H:%M') if job.date_completed else "N/A" }}</td>
+                <td>{{ job.invoice_number or "N/A" }}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('job_detail', job_id=job.id) }}">View Details</a></li>
+                            <!-- Allow assistants to make updates too -->
+                            <li><a class="dropdown-item" href="{{ url_for('technician_update_job', job_id=job.id) }}">Make Updates</a></li>
+                            {% if job.assigned_to_id == current_user.id or current_user in job.assistants %}
+                                {% if job.status != 'completed' and job.status != 'closed' %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('complete_job', job_id=job.id) }}" onclick="return confirm('Mark this job as complete?')">Mark Complete</a></li>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Job Details</h1>
+    
+    <!-- Single job display (no loop needed) -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ job.title }}</h5>
+                    <small class="text-muted">Job Card: {{ job.job_number or "N/A" }}</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>ID:</strong> {{ job.id }}</p>
+                            <p><strong>Description:</strong> {{ job.description or "N/A" }}</p>
+                            <p><strong>Status:</strong> <span class="badge {% if job.status == 'closed' %}bg-success{% elif job.status == 'completed' %}bg-warning{% else %}bg-secondary{% endif %}">{{ job.status or "N/A" }}</span></p>
+                            <p><strong>Created By:</strong> {{ job.created_by.username if job.created_by else "N/A" }}</p>
+                            <p><strong>Assigned To:</strong> {{ job.assigned_to.username if job.assigned_to else "N/A" }}</p>
+                            <p><strong>Customer:</strong> {{ job.customer.company_name if job.customer else "N/A" }}</p>
+                            
+                            <!-- NEW: Time Allocated -->
+                            <p><strong>Time Allocated:</strong> 
+                                {% if job.time_allocated %}
+                                    {% if job.time_allocated >= 60 %}
+                                        {{ (job.time_allocated // 60) }}h {{ (job.time_allocated % 60) }}m
+                                    {% else %}
+                                        {{ job.time_allocated }}m
+                                    {% endif %}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Payment Terms:</strong> {{ job.payment_terms or "N/A" }}</p>
+                            <p><strong>Scheduled:</strong> 
+                                {% if job.date_scheduled %}
+                                    {{ job.date_scheduled.strftime('%d/%m/%Y at %H:%M') }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                            <p><strong>Completed:</strong> 
+                                {% if job.date_completed %}
+                                    {{ job.date_completed.strftime('%d/%m/%Y at %H:%M') }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                            <p><strong>Invoice:</strong> {{ job.invoice_number or "N/A" }}</p>
+                            
+                            <!-- NEW: Vehicle Information -->
+                            <p><strong>Vehicle:</strong> 
+                                {% if job.vehicle %}
+                                    <span class="badge bg-info">{{ job.vehicle.vehicle_number }}</span>
+                                    {{ job.vehicle.make }} {{ job.vehicle.model }}
+                                    {% if job.vehicle.vehicle_type %}
+                                        ({{ job.vehicle.vehicle_type.title() }})
+                                    {% endif %}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Contact Person Section -->
+                    {% if job.contact_person or job.contact_phone or job.contact_email %}
+                    <div class="mt-3">
+                        <h6><strong>Contact Information:</strong></h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p><strong>Contact Person:</strong> {{ job.contact_person or "N/A" }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Phone:</strong> 
+                                    {% if job.contact_phone %}
+                                        <a href="tel:{{ job.contact_phone }}" class="text-decoration-none">
+                                            <i class="fas fa-phone"></i> {{ job.contact_phone }}
+                                        </a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Email:</strong> 
+                                    {% if job.contact_email %}
+                                        <a href="mailto:{{ job.contact_email }}" class="text-decoration-none">
+                                            <i class="fas fa-envelope"></i> {{ job.contact_email }}
+                                        </a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- NEW: Assistants Section -->
+                    {% if job.assistants %}
+                    <div class="mt-3">
+                        <h6><strong>Assistants:</strong></h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for assistant in job.assistants %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-user"></i> {{ assistant.username }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if job.notes %}
+                    <div class="mt-3">
+                        <h6><strong>Notes:</strong></h6>
+                        <p class="text-muted">{{ job.notes }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mt-3">
+                        <h6><strong>Workflow Status:</strong></h6>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <small class="d-block">
+                                    <i class="fas fa-store fa-lg {{ 'text-success' if job.stores_confirmation else 'text-muted' }}"></i>
+                                    <span class="{{ 'text-success' if job.stores_confirmation else 'text-muted' }}">Stores: {{ "✓ Confirmed" if job.stores_confirmation else "✗ Pending" }}</span>
+                                    {% if job.stores_confirmation and job.stores_confirmation_by %}
+                                        <br><small class="text-muted">by {{ job.stores_confirmation_by.username }}</small>
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <div class="col-md-3">
+                                <small class="d-block">
+                                    <i class="fas fa-tools fa-lg {{ 'text-success' if job.work_done else 'text-muted' }}"></i>
+                                    <span class="{{ 'text-success' if job.work_done else 'text-muted' }}">Work Done: {{ "✓ Complete" if job.work_done else "✗ Pending" }}</span>
+                                    {% if job.work_done and job.work_done_by %}
+                                        <br><small class="text-muted">by {{ job.work_done_by.username }}</small>
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <div class="col-md-3">
+                                <small class="d-block">
+                                    <i class="fas fa-check-circle fa-lg {{ 'text-success' if job.technical_manager_approval else 'text-muted' }}"></i>
+                                    <span class="{{ 'text-success' if job.technical_manager_approval else 'text-muted' }}">Tech Approval: {{ "✓ Approved" if job.technical_manager_approval else "✗ Pending" }}</span>
+                                    {% if job.technical_manager_approval and job.technical_manager_approval_by %}
+                                        <br><small class="text-muted">by {{ job.technical_manager_approval_by.username }}</small>
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <div class="col-md-3">
+                                <small class="d-block">
+                                    <i class="fas fa-dollar-sign fa-lg {{ 'text-success' if job.accounts_payment else 'text-muted' }}"></i>
+                                    <span class="{{ 'text-success' if job.accounts_payment else 'text-muted' }}">Payment: {{ "✓ Paid" if job.accounts_payment else "✗ Pending" }}</span>
+                                    {% if job.accounts_payment and job.accounts_payment_by %}
+                                        <br><small class="text-muted">by {{ job.accounts_payment_by.username }}</small>
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="javascript:history.back()" class="btn btn-secondary me-2">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <a href="{{ url_for('jobManagement') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-list"></i> View All Jobs
+                    </a>
+                    <!-- NEW: Edit Job Button -->
+                    <a href="{{ url_for('edit_job', job_id=job.id) }}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Edit Job
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NEW: Side Panel for Additional Information -->
+        <div class="col-md-4">
+            <!-- Vehicle Details Card -->
+            {% if job.vehicle %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-car"></i> Vehicle Details</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>License Plate:</strong> {{ job.vehicle.vehicle_number }}</p>
+                    <p><strong>Make & Model:</strong> {{ job.vehicle.make }} {{ job.vehicle.model }}</p>
+                    {% if job.vehicle.year %}
+                        <p><strong>Year:</strong> {{ job.vehicle.year }}</p>
+                    {% endif %}
+                    {% if job.vehicle.color %}
+                        <p><strong>Color:</strong> {{ job.vehicle.color }}</p>
+                    {% endif %}
+                    {% if job.vehicle.fuel_type %}
+                        <p><strong>Fuel Type:</strong> {{ job.vehicle.fuel_type.title() }}</p>
+                    {% endif %}
+                    {% if job.vehicle.capacity %}
+                        <p><strong>Capacity:</strong> {{ job.vehicle.capacity }}</p>
+                    {% endif %}
+                    <p><strong>Status:</strong> 
+                        <span class="badge {% if job.vehicle.status == 'available' %}bg-success{% elif job.vehicle.status == 'in_use' %}bg-warning{% else %}bg-danger{% endif %}">
+                            {{ job.vehicle.status.replace('_', ' ').title() }}
+                        </span>
+                    </p>
+                    {% if job.vehicle.mileage %}
+                        <p><strong>Mileage:</strong> {{ job.vehicle.mileage }} km</p>
+                    {% endif %}
+                    {% if job.vehicle.notes %}
+                        <p><strong>Notes:</strong> <small class="text-muted">{{ job.vehicle.notes }}</small></p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Team Members Card -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-users"></i> Team Members</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <strong>Primary Technician:</strong><br>
+                        {% if job.assigned_to %}
+                            <span class="badge bg-primary">{{ job.assigned_to.username }}</span>
+                        {% else %}
+                            <span class="text-muted">Not assigned</span>
+                        {% endif %}
+                    </div>
+                    
+                    {% if job.assistants %}
+                        <div class="mb-2">
+                            <strong>Assistants:</strong><br>
+                            {% for assistant in job.assistants %}
+                                <span class="badge bg-secondary mb-1">{{ assistant.username }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-2">
+                        <strong>Created By:</strong><br>
+                        {% if job.created_by %}
+                            <span class="badge bg-info">{{ job.created_by.username }}</span>
+                        {% else %}
+                            <span class="text-muted">Unknown</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Job Statistics Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-chart-bar"></i> Job Statistics</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>Created:</strong> 
+                        {% if job.created_at %}
+                            {{ job.created_at.strftime('%d/%m/%Y at %H:%M') }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </p>
+                    
+                    {% if job.updated_at %}
+                        <p><strong>Last Updated:</strong> {{ job.updated_at.strftime('%d/%m/%Y at %H:%M') }}</p>
+                    {% endif %}
+                    
+                    {% if job.time_allocated %}
+                        <p><strong>Estimated Duration:</strong> 
+                            {% if job.time_allocated >= 60 %}
+                                {{ (job.time_allocated // 60) }} hours {{ (job.time_allocated % 60) }} minutes
+                            {% else %}
+                                {{ job.time_allocated }} minutes
+                            {% endif %}
+                        </p>
+                    {% endif %}
+                    
+                    {% if job.date_scheduled and job.date_completed %}
+                        {% set duration = job.date_completed - job.date_scheduled %}
+                        <p><strong>Actual Duration:</strong> {{ duration.days }} days, {{ duration.seconds // 3600 }} hours</p>
+                    {% endif %}
+                    
+                    <div class="progress mb-2">
+                        {% set progress = 0 %}
+                        {% if job.stores_confirmation %}{% set progress = progress + 25 %}{% endif %}
+                        {% if job.work_done %}{% set progress = progress + 25 %}{% endif %}
+                        {% if job.technical_manager_approval %}{% set progress = progress + 25 %}{% endif %}
+                        {% if job.accounts_payment %}{% set progress = progress + 25 %}{% endif %}
+                        
+                        <div class="progress-bar" role="progressbar" style="width: {{ progress }}%" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ progress }}% Complete
+                        </div>
+                    </div>
+                    <small class="text-muted">Workflow completion status</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- NEW: Custom CSS for better styling -->
+<style>
+.badge {
+    font-size: 0.85em;
+}
+
+.card-header h6 {
+    color: #495057;
+}
+
+.progress {
+    height: 8px;
+}
+
+.text-decoration-none:hover {
+    text-decoration: underline !important;
+}
+
+@media (max-width: 768px) {
+    .col-md-4 {
+        margin-top: 20px;
+    }
+}
+</style>
+{% endblock %}
