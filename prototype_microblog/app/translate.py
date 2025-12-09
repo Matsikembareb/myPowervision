@@ -76,8 +76,3 @@ def translate(text, source_language, dest_language):
                 if has_request_context():
                     return _('Error: the translation service failed.')
                 return 'Error: the translation service failed.'
-    
-    # Fallback return in case loop completes without returning
-    if has_request_context():
-        return _('Error: the translation service failed.')
-    return 'Error: the translation service failed.'
