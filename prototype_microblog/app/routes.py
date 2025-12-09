@@ -1,3 +1,4 @@
+from langdetect import detect, LangDetectException
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 from flask import render_template, flash, redirect, url_for, request, g
@@ -25,7 +26,11 @@ def before_request():
 def index():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
+        try:
+            language = detect(form.post.data)
+        except LangDetectException:
+            language = ''
+        post = Post(body=form.post.data, author=current_user, language=language)
         db.session.add(post)
         db.session.commit()
         flash(_('Your post is now live!'))
