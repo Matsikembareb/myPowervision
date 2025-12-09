@@ -13,3 +13,4 @@ pyjwt==2.10.1
 email-validator==2.1.0  # Add this - needed for WTForms email validation
 Flask-Babel==4.0.0
 Flask-Moment==1.0.5
+requests==2.32.3
