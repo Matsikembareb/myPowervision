@@ -1,5 +1,6 @@
 import requests
 from flask import current_app
+from urllib.parse import quote
 
 
 def translate(text, source_language, dest_language):
@@ -24,23 +25,51 @@ def translate(text, source_language, dest_language):
     }
     
     try:
-        r = requests.post(
-            'https://api.cognitive.microsofttranslator.com/translate'
-            '?api-version=3.0&from={}&to={}'.format(source_language, dest_language),
-            headers=auth,
-            json=[{'Text': text}]
-        )
+        # URL-encode language parameters to prevent injection
+        url = ('https://api.cognitive.microsofttranslator.com/translate'
+               '?api-version=3.0&from={}&to={}'.format(
+                   quote(source_language, safe=''),
+                   quote(dest_language, safe='')))
+        
+        r = requests.post(url, headers=auth, json=[{'Text': text}])
         
         if r.status_code != 200:
             return 'Error: the translation service failed.'
         
-        response_data = r.json()
-        if (not response_data or not isinstance(response_data, list) or
-                len(response_data) == 0 or 'translations' not in response_data[0] or
-                len(response_data[0]['translations']) == 0 or
-                'text' not in response_data[0]['translations'][0]):
+        # Parse and validate API response
+        try:
+            response_data = r.json()
+        except ValueError:
+            return 'Error: the translation service failed.'
+        
+        # Validate response structure
+        if not _is_valid_translation_response(response_data):
             return 'Error: the translation service failed.'
         
         return response_data[0]['translations'][0]['text']
-    except (requests.exceptions.RequestException, ValueError, KeyError, IndexError):
+    except requests.exceptions.RequestException:
         return 'Error: the translation service failed.'
+
+
+def _is_valid_translation_response(response_data):
+    """Validate the structure of Microsoft Translator API response.
+    
+    Args:
+        response_data: The parsed JSON response from the API
+        
+    Returns:
+        True if response has expected structure, False otherwise
+    """
+    if not response_data or not isinstance(response_data, list):
+        return False
+    if len(response_data) == 0:
+        return False
+    if 'translations' not in response_data[0]:
+        return False
+    if not isinstance(response_data[0]['translations'], list):
+        return False
+    if len(response_data[0]['translations']) == 0:
+        return False
+    if 'text' not in response_data[0]['translations'][0]:
+        return False
+    return True
