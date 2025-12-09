@@ -19,7 +19,8 @@ def translate(text, source_language, dest_language):
     
     auth = {
         'Ocp-Apim-Subscription-Key': current_app.config['MS_TRANSLATOR_KEY'],
-        'Ocp-Apim-Subscription-Region': current_app.config.get('MS_TRANSLATOR_REGION', 'global')
+        'Ocp-Apim-Subscription-Region': current_app.config.get('MS_TRANSLATOR_REGION', 'global'),
+        'Content-Type': 'application/json'
     }
     
     try:
@@ -33,6 +34,13 @@ def translate(text, source_language, dest_language):
         if r.status_code != 200:
             return 'Error: the translation service failed.'
         
-        return r.json()[0]['translations'][0]['text']
-    except requests.exceptions.RequestException:
+        response_data = r.json()
+        if (not response_data or not isinstance(response_data, list) or
+                len(response_data) == 0 or 'translations' not in response_data[0] or
+                len(response_data[0]['translations']) == 0 or
+                'text' not in response_data[0]['translations'][0]):
+            return 'Error: the translation service failed.'
+        
+        return response_data[0]['translations'][0]['text']
+    except (requests.exceptions.RequestException, ValueError, KeyError, IndexError):
         return 'Error: the translation service failed.'
